@@ -7,7 +7,7 @@ UI.java: Handles the user interface and passes commands to the Control-object
 
 Control.java: Handles the modification to the data and sends data to the UI
 
-Beer.java: The representation of a beer
+Beer.java: The representation of a beer\n
 
 
 Plans: Implement exception handling
