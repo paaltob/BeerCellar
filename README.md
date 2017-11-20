@@ -10,4 +10,4 @@ Control.java: Handles the modification to the data and sends data to the UI
 Beer.java: The representation of a beer
 
 
-Plans: Implement exception handling
+Future plans: Implement exception handling
