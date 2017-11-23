@@ -19,6 +19,13 @@ public class UI {
     public UI(String filename) {
 	this.filename = filename;
 	control = new Control(filename);	
+	try {
+	    control.readFile();
+	}
+	catch (Exception e) {
+	    System.err.println("Something went wrong with reading the file!");
+	    System.err.println(e);
+	}
     }
     
     /**
@@ -82,8 +89,14 @@ public class UI {
     /**
      * Writes to file and quits
      */
-    private void quit() {
-	control.writeFile();
+    private void quit() {	
+	try {
+	    control.writeFile();
+	}
+	catch (Exception e) {
+	    System.out.println("Something went wrong when writing the file!");
+	    System.out.println(e);
+	}
 	System.out.println("\nQuitting! Goodbye!");
     }
 
@@ -105,7 +118,12 @@ public class UI {
 	 * Takes in additonal info if needed
 	 */
 	if(control.hasBeer(name, dateString)) {
-	    control.addBeer(name, dateString, count);
+	    try {
+		control.addBeer(name, dateString, count);
+	    }
+	    catch(Exception e) {
+		System.err.println(e);
+	    }
 	}
 	else {
 	    System.out.print("Enter beer style: ");
@@ -117,7 +135,12 @@ public class UI {
 	    System.out.print("Enter volume of bottle/can (in cl): ");
 	    double volume = in.nextDouble();in.nextLine();
 	    
-	    control.addBeer(name, dateString, count, country, type, abv, volume);
+	    try {
+		control.addBeer(name, dateString, count, country, type, abv, volume);
+	    }
+	    catch(Exception e) {
+		System.err.println(e);
+	    }
 	}
     }
 
@@ -132,8 +155,13 @@ public class UI {
 	String dateString = in.nextLine().trim();
 	System.out.print("Enter number of bottles to remove: ");
 	int count = in.nextInt();in.nextLine();
-
-	control.removeBeer(name, dateString, count);
+	
+	try {
+	    control.removeBeer(name, dateString, count);
+	}
+	catch(Exception e) {
+	    System.err.println(e);
+	}
     }
 
     /**

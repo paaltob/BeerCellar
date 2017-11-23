@@ -34,15 +34,17 @@ public class Control {
     public Control(String filename) {
 	this.filename = filename;
 	beers = new HashMap<String, Beer>();
-	if(filename != null) {
-	    readFile();
-	}
+	
     }
 
     /**
      * Reads in the beers from file if the file exists.
      */
-    private void readFile() {
+    public void readFile() throws Exception{
+	if(filename == null) {
+	    return;
+	}
+	
 	Scanner fileReader = null;
 	try {
 	    File file = new File(filename);
@@ -59,7 +61,7 @@ public class Control {
 	    }
 	}
 	catch(Exception e) {
-	    System.out.println("Something went wrong reading the file!" + e);
+	    throw e;
 	}
 	finally {
 	    if(fileReader != null) fileReader.close();
@@ -70,7 +72,7 @@ public class Control {
      * Writes the beers to file. Gets all the beers and writes them to file
      * using the Beer's toString()
      */
-    public void writeFile() {
+    public void writeFile() throws Exception {
 	if(filename == null) {
 	    return;
 	}
@@ -83,7 +85,7 @@ public class Control {
 	    }
 	}
 	catch(Exception e) {
-	    System.err.println("Something went wrong wile writing the file!");
+	    throw e;
 	}
     }
 
@@ -107,7 +109,10 @@ public class Control {
      * @param dateString The expiration date of the beer as String on the format dd/MM/yyyy
      * @param count The number of bottles
      */
-    public void addBeer(String name, String dateString, int count) {
+    public void addBeer(String name, String dateString, int count) throws Exception{
+	if(!hasBeer(name, dateString)) {
+	    throw new Exception("Trying to update an beer that doesn't exist: " + name + " " + dateString);
+	}
 	Beer beer = beers.get(name + dateString);
 	beer.addBottles(count);
     }
@@ -123,14 +128,19 @@ public class Control {
      * @param abv The ABV of the beer
      * @param volume The volume of the beer in cl
      */
-    public void addBeer(String name, String dateString, int count, String country, String type, double abv, double volume) {
+    public void addBeer(String name, String dateString, int count, String country, String type, 
+			double abv, double volume) throws Exception {
+	if(hasBeer(name, dateString)) {
+	    throw new Exception("Trying to create an beer that already exist: " + name + " " + dateString);
+	}
+	
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	try {
 	    Date expireDate = df.parse(dateString);
 	    beers.put(name+dateString, new Beer(name, country, type, expireDate, abv, volume, count));
 	}
 	catch(Exception e) {
-	    System.out.println("Something went wrong with parsing date");
+	    throw e;
 	}
     }
     
@@ -141,9 +151,9 @@ public class Control {
      * @param dateString The expiration date of the beer as String on the format dd/MM/yyyy
      * @param count The number of bottles to be removed
      */
-    public void removeBeer(String name, String dateString, int count) {
+    public void removeBeer(String name, String dateString, int count) throws Exception {
 	if(!hasBeer(name, dateString)) {
-	    System.out.println("Beer doesn't exist!");
+	    throw new Exception("Trying to remove a beer that doesn't exist: " + name + " " + dateString);
 	}
 	else {
 	    Beer beer = beers.get(name + dateString);
