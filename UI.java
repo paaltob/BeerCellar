@@ -1,6 +1,6 @@
 import java.util.Scanner; 
 import java.util.Iterator;
-
+import java.util.ArrayList;
 /**
  * Handles the user interface
  */
@@ -18,13 +18,37 @@ public class UI {
      */
     public UI(String filename) {
 	this.filename = filename;
-	control = new Control(filename);
+	control = new Control(filename);	
     }
     
     /**
      * Runs a command loop, which takes in commands from the user and executes that command
      */
     public void run() {
+
+	//Checks if there exists beers that soon expires, and prints them out
+	ArrayList<Beer> oldBeers = control.getOldBeers();
+	if(oldBeers != null) {
+	    System.out.println("\nThere are some beers that soon expires!");
+	    
+	    // First prints out an header line
+	    System.out.format("%-30s | %-10s | %-15s | %6s | %8s | %15s | %5s\n", "Name", "Country", "Beer style", 
+			      "ABV", "Volume", "Expiration date", "Number of bottles");
+	
+	    // Prints out an line to separate the header from the beers
+	    for(int i=0;i < 119; i++) System.out.print("-");
+	    System.out.println("");
+
+	    // Prints out all the old beers
+	    String[] beerFields;
+	    for(int i = 0; i < oldBeers.size(); i++) {
+		beerFields = oldBeers.get(i).toString().split(";");
+		System.out.format("%-30s | %-10s | %-15s | %5s%% | %5s cl | %15s | %5s\n", beerFields[0], beerFields[1], 
+				  beerFields[2], beerFields[3], beerFields[4], beerFields[5], beerFields[6]); 
+	    }
+
+	}
+
 	int command = -1;
 	while(command != 0) {
 	    System.out.println("\nWhat do you want to do?");

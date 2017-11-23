@@ -1,10 +1,12 @@
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.io.File;
 import java.io.BufferedWriter;
@@ -50,7 +52,6 @@ public class Control {
 		String[] beerFields;
 		while(fileReader.hasNextLine()) {
 		    beerFields = fileReader.nextLine().trim().split(";");
-		    System.out.println("Adding " + beerFields[0]);
 		    addBeer(beerFields[0], beerFields[5], Integer.parseInt(beerFields[6]), beerFields[1], 
 			    beerFields[2], Double.parseDouble(beerFields[3]), Double.parseDouble(beerFields[4]));
 		    
@@ -269,6 +270,38 @@ public class Control {
 	
 	return getBeers(comp);
     }
-    
+
+    /**
+     * Returns all the beers which have an expiration date less than
+     * 1 month from the current date
+     *
+     * @return An list of the beers that soon expires sorted by expiration date. Returns null if no beer expire soon.
+     */
+    public ArrayList<Beer> getOldBeers() {
+	Iterator<Beer> beerIt = getBeersByDate();
+	ArrayList<Beer> oldBeers = new ArrayList<Beer>();
+	
+	//Creates an warning date which is 1 month after today
+	Calendar cal = Calendar.getInstance();
+	cal.add(Calendar.MONTH, 1);
+	Date warningDate = cal.getTime();
+	
+
+	while(beerIt.hasNext()) {
+	    Beer beer = beerIt.next();
+	    
+	    if(beer.expireDate.before(warningDate)) {
+		oldBeers.add(beer);
+	    }
+	}
+	
+	//Returns null if there is no old beers
+	if(oldBeers.isEmpty()) {
+	    return null;
+	}
+	else {
+	    return oldBeers;
+	}
+    }
     
 }
