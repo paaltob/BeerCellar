@@ -39,6 +39,7 @@ public class Control {
 
     /**
      * Reads in the beers from file if the file exists.
+     * @throws Exception Rethrows exception it gets from File and Scanner
      */
     public void readFile() throws Exception{
 	if(filename == null) {
@@ -71,6 +72,8 @@ public class Control {
     /**
      * Writes the beers to file. Gets all the beers and writes them to file
      * using the Beer's toString()
+     *
+     * @throws Exception rethrows exception it gets from FileWriter or BufferedWriter
      */
     public void writeFile() throws Exception {
 	if(filename == null) {
@@ -108,6 +111,7 @@ public class Control {
      * @param name The name of the beer
      * @param dateString The expiration date of the beer as String on the format dd/MM/yyyy
      * @param count The number of bottles
+     * @throws Exception if it tries to update an beer that doesn't exist
      */
     public void addBeer(String name, String dateString, int count) throws Exception{
 	if(!hasBeer(name, dateString)) {
@@ -127,6 +131,7 @@ public class Control {
      * @param type The beer style of the beer
      * @param abv The ABV of the beer
      * @param volume The volume of the beer in cl
+     * @throws Exception if it tries to create an beer that already exist
      */
     public void addBeer(String name, String dateString, int count, String country, String type, 
 			double abv, double volume) throws Exception {
@@ -150,6 +155,7 @@ public class Control {
      * @param name The name of the beer
      * @param dateString The expiration date of the beer as String on the format dd/MM/yyyy
      * @param count The number of bottles to be removed
+     * @throws Exception if it tries to remove an beer that doesn't exist
      */
     public void removeBeer(String name, String dateString, int count) throws Exception {
 	if(!hasBeer(name, dateString)) {

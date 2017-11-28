@@ -24,7 +24,7 @@ public class Beer {
      * @param name The name of the beer
      * @param country The country of the beer
      * @param type The beer style
-     * @param exipireDate The expiration date of the beer
+     * @param expireDate The expiration date of the beer
      * @param abv The ABV of the beer
      * @param volume The volume of the beer in cl
      * @param count The number of bottles/cans
