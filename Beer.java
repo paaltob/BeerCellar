@@ -1,7 +1,5 @@
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Class for a beer
@@ -13,9 +11,8 @@ import java.text.SimpleDateFormat;
  */
 public class Beer {
     String name, country, type;
-    Date expireDate;
+    LocalDate expireDate;
     double abv, volume;
-    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
     int count;
 
     /**
@@ -29,7 +26,7 @@ public class Beer {
      * @param volume The volume of the beer in cl
      * @param count The number of bottles/cans
      */
-    public Beer(String name, String country, String type, Date expireDate, 
+    public Beer(String name, String country, String type, LocalDate expireDate, 
 		double abv, double volume, int count) {
 	this.name = name;
 	this.country = country;
@@ -46,7 +43,9 @@ public class Beer {
      * @return An String representation of the Beer
      */
     public String toString() {
-	return String.format("%s;%s;%s;%.1f;%.1f;%s;%d", name, country, type, abv, volume, df.format(expireDate), count);
+	DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	return String.format("%s;%s;%s;%.1f;%.1f;%s;%d", name, country, type, abv, volume, 
+			     expireDate.format(dateFormat), count);
     }
 
     /**

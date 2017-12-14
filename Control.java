@@ -5,15 +5,12 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Calendar;
 import java.util.Scanner;
 import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Class for handling modifing and getting the beers.
@@ -139,14 +136,9 @@ public class Control {
 	    throw new Exception("Trying to create an beer that already exist: " + name + " " + dateString);
 	}
 	
-	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	try {
-	    Date expireDate = df.parse(dateString);
-	    beers.put(name+dateString, new Beer(name, country, type, expireDate, abv, volume, count));
-	}
-	catch(Exception e) {
-	    throw e;
-	}
+	DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	LocalDate expireDate = LocalDate.parse(dateString, dateFormat);
+	beers.put(name+dateString, new Beer(name, country, type, expireDate, abv, volume, count)); 
     }
     
     /**
@@ -297,16 +289,12 @@ public class Control {
 	Iterator<Beer> beerIt = getBeersByDate();
 	ArrayList<Beer> oldBeers = new ArrayList<Beer>();
 	
-	//Creates an warning date which is 1 month after today
-	Calendar cal = Calendar.getInstance();
-	cal.add(Calendar.MONTH, 1);
-	Date warningDate = cal.getTime();
-	
+	LocalDate warningDate = LocalDate.now().plusMonths(1);
 
 	while(beerIt.hasNext()) {
 	    Beer beer = beerIt.next();
 	    
-	    if(beer.expireDate.before(warningDate)) {
+	    if(beer.expireDate.compareTo(warningDate) <= 0) {
 		oldBeers.add(beer);
 	    }
 	}
